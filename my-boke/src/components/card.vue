@@ -8,7 +8,6 @@
 export default {
     props:{
         height: {
-            type: String,
             default: '400'
         }
     }
@@ -20,6 +19,6 @@ export default {
         width: 100%;
         background-color: rgba(255, 255, 255, .5);
         color: #fff;
-        box-shadow: 0px 0px 40px 0px #fff;
+        margin-bottom: 20px;
     }
 </style>

@@ -16,9 +16,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import { Progress } from 'element-ui';
-Vue.use(Progress);
 export default {
   name: 'index',
   data() {

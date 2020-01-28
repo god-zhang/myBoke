@@ -14,12 +14,32 @@ const routes = [{
         name: 'home',
         component: () =>
             import ('../views/Home.vue')
+    },
+    {
+        path: '/leaveMes',
+        name: 'leaveMes',
+        component: () =>
+            import ('../views/leaveMes.vue')
+    },
+    {
+        path: '/record',
+        name: 'record',
+        component: () =>
+            import ('../views/record.vue')
+    },
+    {
+        path: '/about',
+        name: 'about',
+        component: () =>
+            import ('../views/about.vue')
     }
 ]
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
+    linkExactActiveClass: 'link-active',
+    linkActiveClass: 'active',
     routes
 })
 
