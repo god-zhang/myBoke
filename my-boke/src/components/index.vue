@@ -90,6 +90,7 @@ export default {
         margin: -200px 0 0 -200px;
         z-index: 10;
         font-size: 20px;
+        text-align: center;
         &.hide{
           animation: xishou 1s forwards linear;
         }

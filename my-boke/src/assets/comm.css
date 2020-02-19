@@ -1,3 +1,4 @@
+@import '//at.alicdn.com/t/font_1635145_gqkwaiexbb.css';
 .contentYS {
     width: 100%;
     height: 100%;
@@ -11,4 +12,34 @@
 
 .top80 {
     margin-top: 80px;
+}
+
+.card {
+    width: 100%;
+    background-color: rgba(255, 255, 255, .5);
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style: none;
+}
+
+.cardCommon {
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+.cardTitle {
+    font-size: 18px;
+    color: #ace;
+}
+
+.cardHr {
+    margin: 10px 0;
+}
+
+.height60 {
+    width: 100%;
+    height: 60px;
 }

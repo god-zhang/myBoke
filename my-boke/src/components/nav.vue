@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="bannerCon_pc">
-      <router-link tag="div" class="logo" to="/">(〃'▽'〃)</router-link>
+      <router-link tag="div" class="logo" to="/"><img :src="logo" alt="logo" title="首页" @mouseover="handleHover" @mouseout="handleOut"></router-link>
       <ul>
         <router-link tag="li" to="home">博客</router-link>
         <router-link tag="li" to="leaveMes">留言</router-link>
@@ -13,11 +13,11 @@
     </div>
 
     <div class="bannerCon_m">
-      <router-link tag="div" class="logo" to="/">(〃'▽'〃)</router-link>
+      <router-link tag="div" class="logo" to="/"><img :src="logo" alt="logo" title="首页" @mouseover="handleHover" @mouseout="handleOut"></router-link>
       <div class="login">登录</div>
       <div class="more">
         <img src="~@/assets/images/all.png" alt="" @click="showMenu">
-        <ul class="menu" :class="menu_hide ? 'showList' : 'hideList'">
+        <ul class="menu" v-if="menu_hide">
           <router-link tag="li" to="home">博客</router-link>
           <router-link tag="li" to="leaveMes">留言</router-link>
           <router-link tag="li" to="record">随手记</router-link>
@@ -29,24 +29,25 @@
 </template>
 
 <script>
+import logo from '../assets/images/logo.png';
+import logo_hover from '../assets/images/logo_hover.png';
 export default {
   data() {
     return {
-      menu_hide: false
+      menu_hide: false,
+      logo: logo
     }
   },
 
   methods:{
     showMenu(){
       this.menu_hide = !this.menu_hide;
-      const className = document.getElementsByClassName('menu')[0].className.split(' ')[1];
-      if(className == 'showList'){
-        setTimeout(()=>{
-          document.getElementsByClassName('menu')[0].style.display = 'none';
-        },500)
-      }else{
-        document.getElementsByClassName('menu')[0].style.display = 'block';
-      }
+    },
+    handleHover(){
+      this.logo = logo_hover;
+    },
+    handleOut(){
+      this.logo = logo;
     }
   }
 }
@@ -65,6 +66,7 @@ export default {
         top: 0;
         left: 0;
         z-index: 100;
+        text-align: center;
         .bannerCon_m{
           display: none;
         }
@@ -137,25 +139,6 @@ export default {
         width: 100%;
       }
     }
-
-    @keyframes showList {
-      0%{
-        width: 30%;
-      }
-      100%{
-        width: 100%;
-      }
-    }
-
-    @keyframes hideList {
-      0%{
-        width: 100%;
-      }
-      100%{
-        width: 30%;
-        opacity: 0;
-      }
-    }
     
     @media screen and (max-width:1024px){
       .banner{
@@ -198,16 +181,9 @@ export default {
               width: 100%;
               background: url('~@/assets/images/bg.jpg') no-repeat;
               box-shadow: 0px 0px 30px -10px #fff;
-              &.showList{
-                animation: showList .5s ease-in-out forwards;
-              }
-              &.hideList{
-                animation: hideList .5s ease-in-out forwards;
-              }
               li{
                 text-align: left;
                 padding: 0px 15px;
-                // border-bottom: 1px solid #fff;
                 position: relative;
                 &.link-active{
                 color: #6200ec;
