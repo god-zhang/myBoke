@@ -1,34 +1,34 @@
 <template>
-  <div class="blogCard card">
+  <div class="blogCard card animated zoomInUp">
     <div class="head">
-        <div class="title">
-            <span>【原创】</span>
-            <span>第一篇文章fdfdfgfgfsdfgsdggfsdgfsgd</span>
-        </div>
+        <router-link class="title" tag="div" :to="'/article?aId='+articles.id">
+            <span>【{{articles.type}}】</span>
+            <span class="titleCon">{{articles.title}}</span>
+        </router-link>
         <div class="time">
-            <span :style="{color: randomColor1}">2020</span>&nbsp;-&nbsp;<span :style="{color: randomColor2}">2</span>&nbsp;-&nbsp;<span :style="{color: randomColor3}">1</span>
+            <span :style="{color: randomColor1}">{{dealDate('y')}}</span>&nbsp;-&nbsp;<span :style="{color: randomColor2}">{{dealDate('m')}}</span>&nbsp;-&nbsp;<span :style="{color: randomColor3}">{{dealDate('d')}}</span>
         </div>
     </div>
     <div class="body">
         <div class="img">
-            <img src="~@/assets/images/bg.jpg" alt="">
+            <img :src="articles.cover" alt="">
         </div>
-        <div class="desc">这是我发布的第一遍文章,希望大家多多支持aaaaaaaaaaaaaaaaaaa</div>
+        <div class="desc">{{articles.introduce}}</div>
     </div>
     <div class="hr"></div>
     <div class="foot">
         <div class="tag">
             <img src="~@/assets/images/tag.png" alt="">
-            <span>JavaScript</span>
+            <span v-for="item in dealTags" :key="item+'TAGS'">{{item}}</span>
         </div>
         <div class="number">
             <div class="views">
                 <img src="~@/assets/images/views.png" alt="">
-                <span>45566</span>
+                <span>{{articles.views}}</span>
             </div>
             <div class="comment">
                 <img src="~@/assets/images/comment.png" alt="">
-                <span>234</span>
+                <span>{{articles.comments_num}}</span>
             </div>
         </div>
     </div>
@@ -36,14 +36,19 @@
 </template>
 
 <script>
+import animate from 'animate.css';
 export default {
-    props:{
-        
-    },
+    props: ['articles'],
     data() {
         return {
             
         }
+    },
+    methods: {
+        
+    },
+    mounted() {
+        
     },
     computed:{
         randomColor1(){
@@ -72,6 +77,21 @@ export default {
                 str+=randomZ;
             }
             return '#'+str;
+        },
+        dealDate(){
+            return function(type){
+                if(type == 'y'){
+                    return this.articles.ctime.split('-')[0];
+                }else if(type == 'm'){
+                    return this.articles.ctime.split('-')[1];
+                }else{
+                    return this.articles.ctime.split(' ')[0].split('-')[2];
+                }
+            }
+        },
+        dealTags(){
+            const tagArr = this.articles.tags.split(',');
+            return tagArr;
         }
     }
 }
@@ -84,6 +104,12 @@ export default {
         .head{
             font-size: 16px;
             .title{
+                cursor: pointer;
+                flex: 10;
+                .titleCon:hover{
+                    color: #05b0ff;
+                    text-decoration: underline;
+                }
                 span{
                     &:first-child{
                         color: aqua;
@@ -95,6 +121,8 @@ export default {
                 }
             }
             .time{
+                flex: 2;
+                text-align: right;
                 font-weight: 600;
                 span{
                     font-size: 18px;
@@ -174,9 +202,14 @@ export default {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
+                    cursor: pointer;
+                    .titleCon:hover{
+                        color: #05b0ff;
+                        text-decoration: underline;
+                    }
                 }
                 .time{
-                    display: none;
+                    flex: 5;
                 }
             }
             .body{

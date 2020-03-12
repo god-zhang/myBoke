@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随笔管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>写随笔</h5>
+                    </div>
+                    <div class="ibox-content no-padding" style="margin-top: 20px;">
+                        <div id="essayEdit">
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <button type="button" class="btn btn-w-m btn-primary submitEssay">提交</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/wangEditor.min.js"></script>
+<script src="./emoji.js"></script>
+<script src="js/jQuery.Cookie.js"></script>
+<script src="./common.js"></script>
+<script>
+    $(document).ready(function() {
+        var E = window.wangEditor;
+        var editor2 = new E('#essayEdit')
+        editor2.customConfig.colors = colorArr();
+        editor2.customConfig.emotions = [{
+            title: '表情1',
+            type: 'image',
+            content: allEmojis1
+        }, {
+            title: '表情2',
+            type: 'image',
+            content: allEmojis2
+        }]
+        editor2.customConfig.uploadImgShowBase64 = true;
+        editor2.create();
+
+        $('.submitEssay').click(function() {
+            var content = editor2.txt.html();
+            $.ajax({
+                type: "POST",
+                url: "/api/insertEssay",
+                data: JSON.stringify({
+                    content: content
+                }),
+                dataType: "json",
+                success: function(response) {
+                    layer.msg(response);
+                }
+            });
+        })
+    })
+</script>
+
+</html>

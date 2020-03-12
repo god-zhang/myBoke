@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <title>每日一句管理</title>
+    <style>
+        .good {
+            color: #1ab394;
+        }
+        
+        .bad {
+            color: #dd001b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ibox-content">
+        <div class="row row-lg">
+            <div class="col-sm-12">
+                <h4 class="example-title">每日一句</h4>
+                <div class="example">
+                    <table id="truth" data-mobile-responsive="true" data-show-refresh="true"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+    <script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+    <script src="js/wangEditor.min.js"></script>
+    <script src="js/jQuery.Cookie.js"></script>
+    <script src="./common.js"></script>
+    <script>
+        var $table = $('#truth');
+
+        function operateFormatter(value, row, index) {
+            return [
+                '<a class="removeTruth" href="javascript:void(0)" title="删除" style="margin-right:10px;">',
+                '<i class="fa fa-trash"></i>',
+                '</a>',
+                '<a class="goTop" href="javascript:void(0)" title="置顶">',
+                '<i class="fa fa-level-up"></i>',
+                '</a>'
+            ].join('')
+        }
+
+        $table.bootstrapTable({
+            url: '/api/allTruthByPage',
+            striped: true,
+            pageSize: 5,
+            pageList: [5, 10, 15],
+            pageNumber: 1,
+            pagination: true,
+            sidePagination: 'server',
+            columns: [{
+                field: 'id',
+                title: 'ID'
+            }, {
+                field: 'content',
+                title: '内容'
+            }, {
+                field: 'is_top',
+                title: '是否置顶'
+            }, {
+                field: 'ctime',
+                title: '创建时间'
+            }, {
+                field: 'operate',
+                title: '操作',
+                align: 'center',
+                clickToSelect: false,
+                events: window.operateEvents,
+                formatter: operateFormatter
+            }]
+        })
+    </script>
+</body>
+
+</html>

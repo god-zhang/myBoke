@@ -1,19 +1,17 @@
 <template>
     <div class="timeLine">
         <ul>
-            <li v-for="item in timeData" :key="item.id+'timeLine'">
-                <i class="iconfont iconxingxing"></i>
-                <div class="time">{{item.time}}</div>
-                <div class="content">
-                    <img :src="item.img" alt="" v-if="item.img">
-                    <p>{{item.content}}</p>
-                </div>
+            <li v-for="item in timeData" :key="item.id+'timeLine'" class="animated fadeInRightBig">
+                <img class="tag" src="~@/assets/images/star.png">
+                <div class="time">{{item.ctime}}</div>
+                <div class="content" v-html="item.content"></div>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import animate from 'animate.css';
 export default {
     props:['timeData']
 }
@@ -26,25 +24,28 @@ export default {
             margin: 10px 40px;
             border-left: 2px solid #000;
             li{
-                width: fit-content;
                 padding-left: 50px;
                 position: relative;
                 margin-bottom: 20px;
-                i{
+                img.tag{
                     position: absolute;
-                    left: -20px;
+                    left: -19px;
                     top: -5px;
                     font-size: 40px;
                     color: #f2cb51;
+                    width: 35px;
                 }
                 .time{
                     position: relative;
                     padding-top: 5px;
                     left: -30px;
-                    color: #fff;
-                    font-size: 15px;
+                    color: #fefe55;
+                    font-weight: 600;
+                    font-size: 16px;
                 }
                 .content{
+                    width: auto;
+                    display: inline-block;
                     padding: 10px;
                     margin-top: 20px;
                     margin-left: -10px;

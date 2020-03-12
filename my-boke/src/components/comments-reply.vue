@@ -2,21 +2,26 @@
     <div class="reply">
         <div class="headImg">
             <div class="img">
-                <img src="~@/assets/images/bg.jpg" alt="">
+                <img :src="replyData.avatar" alt="">
             </div>
         </div>
         <div class="content">
             <div class="name">
-                <span class="name1">atsh</span>
+                <span class="name1">{{replyData.name}} <span class="isAdmin" v-if="replyData.is_admin == 1">{{nickName1}}</span></span>
                 <span class="reply1">回复</span>
-                <span class="name2">tgfh</span>
-                <span class="comment-con">噢!上帝,这个博客太好看了吧</span>
+                <span class="name2">{{replyData.parent_name}} <span class="isAdmin" v-if="replyData.is_admin == 1">{{nickName2}}</span></span>
+                <span class="comment-con">
+                    <template v-for="(item,index) in JSON.parse(replyData.content2)">
+                        <img :src="item.split(replyData.url_split_str)[1]" alt="" :key="index+'emjiosImg'" v-if="item.indexOf(replyData.url_split_str)>-1" width='20'>
+                        <span v-if="item.indexOf(replyData.url_split_str) <= -1" :key="index+'emjioSpan'">{{item}}</span>
+                    </template>
+                </span>
             </div>
             <div class="time">
-                <span>2020/2/11 17:36:34</span>
+                <span>{{replyData.ctime}}</span>
                 <span @click="replyUser">{{upAndDown}}</span>
             </div>
-            <replyFrame :showReply='isReplay'></replyFrame>
+            <replyFrame :showReply='isReplay' :parentId='parentId' :blogId='blogId' :replyName='replyData.name' :replyEmail='replyData.email'></replyFrame>
         </div>
     </div>
 </template>
@@ -31,7 +36,24 @@ export default {
     data() {
         return {
             upAndDown: '回复',
-            isReplay: false
+            isReplay: false,
+        }
+    },
+    props: ['replyData','parentId','blogId'],
+    computed: {
+        nickName1(){
+            if(this.replyData.name == '殒殇'){
+                return '博主';
+            }else{
+                return '博主夫人';
+            }
+        },
+        nickName2(){
+            if(this.replyData.parent_name == '殒殇'){
+                return '博主';
+            }else{
+                return '博主夫人';
+            }
         }
     },
     methods:{
@@ -61,6 +83,7 @@ export default {
                 overflow: hidden;
                 img{
                     vertical-align: middle;
+                    width: 100%;
                 }
             }
         }
@@ -69,9 +92,17 @@ export default {
             margin-left: 10px;
             width: 100%;
             .name{
-                font-size: 18px;
+                font-size: 15px;
                 font-weight: 400;
                 margin-bottom: 10px;
+                .isAdmin{
+                    padding: 2px;
+                    color: #fff;
+                    font-size: 10px;
+                    background-color: #6cc40d;
+                    border-radius: 5px;
+                    margin-left: 1px;
+                }
                 span{
                     margin-right: 5px;
                     &.name1,&.name2{
@@ -81,12 +112,12 @@ export default {
                         font-size: 15px;
                     }
                     &.comment-con{
-                        font-size: 15px;
+                        font-size: 14px;
                     }
                 }
             }
             .time{
-                font-size: 14px;
+                font-size: 13px;
                 color: rgb(49, 49, 49);
                 span{
                     &:last-child{

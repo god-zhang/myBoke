@@ -1,6 +1,5 @@
-const path = require('path');
 module.exports = {
-    chainWebpack: config => {
-        config.resolve.alias.set('_s', path.resolve(__dirname, 'src/assets'))
-    },
+    publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+    productionSourceMap: false,
+    outputDir: '../page',
 }

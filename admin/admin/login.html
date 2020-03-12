@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/login_v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:49 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>殒殇 - 登录</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min.css" rel="stylesheet">
+    <link href="css/login.min.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location
+        };
+    </script>
+
+</head>
+
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="signin-info">
+                    <div class="logopanel m-b">
+                        <h1>[ 殒殇 ]</h1>
+                    </div>
+                    <div class="m-b"></div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div>
+                    <h4 class="no-margins">登录：</h4>
+                    <p class="m-t-md">登录到殒殇博客后台</p>
+                    <input type="text" class="form-control uname" placeholder="邮箱" />
+                    <input type="password" class="form-control pword m-b" placeholder="密码" />
+                    <button class="btn btn-success btn-block login">登录</button>
+                </div>
+            </div>
+        </div>
+        <div class="signup-footer">
+            <div class="pull-left">
+                &copy; 2020 All Rights Reserved. 殒殇
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/jQuery.Cookie.js"></script>
+<script>
+    $('.login').click(function() {
+        var email = $('.uname').val();
+        var pwd = $('.pword').val();
+        $.ajax({
+            type: "POST",
+            url: "/api/adminLogin",
+            data: JSON.stringify({
+                email: email,
+                password: pwd
+            }),
+            dataType: 'json',
+            success: function(response) {
+                layer.msg(response.msg);
+                if (response.code == 200) {
+                    $.Cookie('email', response.result.email, {
+                        expires: 7
+                    });
+                    $.Cookie('password', window.btoa(pwd), {
+                        expires: 7
+                    });
+                    $.Cookie('avatar', response.result.avatar, {
+                        expires: 7
+                    });
+                    $.Cookie('name', response.result.name, {
+                        expires: 7
+                    });
+                    window.location.href = '/admin/index.html';
+                }
+            }
+        });
+    })
+</script>
+<!-- Mirrored from www.zi-han.net/theme/hplus/login_v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:52 GMT -->
+
+</html>

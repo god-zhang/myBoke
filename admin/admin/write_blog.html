@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/form_editors.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:35 GMT -->
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>写博客</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>博客编辑</h5>
+                    </div>
+                    <form role="form-horizontal" style="margin-top: 20px;" id="articleMes">
+                        <div class="form-group col-sm-10">
+                            <label for="title" class="col-sm-2 control-label" style="padding-top: 10px;">标题: </label>
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="请输入标题" class="form-control title" id="title" name="title" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10">
+                            <label for="author" class="col-sm-2 control-label" style="padding-top: 10px;">作者: </label>
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="请输入作者" class="form-control author" id="author" value="殒殇" name="author" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10">
+                            <label for="introduce" class="col-sm-2 control-label" style="padding-top: 10px;">首页文章简介: </label>
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="请输入首页文章简介" class="form-control introduce" id="introduce" name="introduce" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10">
+                            <label class="col-sm-2 control-label" style="padding-top: 10px;">文章类型: </label>
+                            <div class="radio i-checks">
+                                <label for="yc"><input type="radio" checked="" value="原创" name="type" id="yc"> <i></i> 原创</label>
+                                <label for="zz"><input type="radio" value="转载" name="type" id="zz"> <i></i> 转载</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10">
+                            <label class="col-sm-2 control-label" style="padding-top: 10px;">文章所属标签: </label>
+                            <div class="checkbox i-checks tagCon">
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-10">
+                            <label for="cover" class="col-sm-2 control-label" style="padding-top: 10px;">文章封面上传: </label>
+                            <div class="col-sm-6 file-pretty">
+                                <input type="file" class="form-control" id="cover" style="background-color: transparent;border: none;" name="cover">
+                            </div>
+                        </div>
+                    </form>
+                    <div class="ibox-content no-padding" style="margin-top: 20px;">
+                        <div id="articleEdit">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-w-m btn-primary submit">提交</button>
+    </div>
+    <script src="js/jquery.min.js?v=2.1.4"></script>
+    <script src="js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script src="js/plugins/prettyfile/bootstrap-prettyfile.js"></script>
+    <script src="js/plugins/layer/laydate/laydate.js"></script>
+    <script src="js/plugins/layer/layer.min.js"></script>
+    <script src="js/wangEditor.min.js"></script>
+    <script src="./emoji.js"></script>
+    <script src="js/jQuery.Cookie.js"></script>
+    <script src="./common.js"></script>
+    <script>
+        $(document).ready(function() {
+            var editor = new E('#articleEdit')
+            editor.customConfig.colors = colorArr();
+            editor.customConfig.emotions = [{
+                title: '表情1',
+                type: 'image',
+                content: allEmojis1
+            }, {
+                title: '表情2',
+                type: 'image',
+                content: allEmojis2
+            }]
+            editor.customConfig.uploadImgShowBase64 = true;
+            editor.create();
+
+            $('.submit').click(() => {
+                var form = new FormData();
+                var values = $("#articleMes").serializeArray();
+                var cover = $('#cover')[0].files[0];
+                var content = editor.txt.html();
+                var tagArr = [];
+                var tagIdArr = [];
+                var dataObj = {}
+                for (var key in values) {
+                    if (values[key].name.indexOf('t-') > -1) {
+                        tagArr.push(values[key].value.split('.')[1]);
+                        tagIdArr.push(parseInt(values[key].value.split('.')[0]));
+                    } else {
+                        dataObj[values[key]['name']] = values[key]['value']
+                    }
+                }
+                dataObj.tags = tagArr
+                dataObj.tagIds = tagIdArr
+                dataObj.cover = cover
+                dataObj.content = content
+                form.append('title', dataObj.title);
+                form.append('author', dataObj.author);
+                form.append('introduce', dataObj.introduce);
+                form.append('type', dataObj.type);
+                form.append('tags', dataObj.tags);
+                form.append('tagIds', dataObj.tagIds);
+                form.append('cover', dataObj.cover);
+                form.append('content', dataObj.content);
+                insertArticle(form);
+
+            })
+            queryTags();
+        });
+
+        function queryTags() {
+            var tagCon = $(".tagCon");
+            $.ajax({
+                type: "GET",
+                url: "/api/queryTags",
+                dataType: "json",
+                success: function(response) {
+                    var str = '';
+                    for (var i = 0; i < response.length; i++) {
+                        str += "<label for=" + response[i].name + "><input type='checkbox' value=" + response[i].id + '.' + response[i].name + " id=" + response[i].name + " name=t-" + response[i].name + "> <i></i> " + response[i].name + "</label>";
+                    }
+                    tagCon.html(str);
+                    $(".i-checks").iCheck({
+                        checkboxClass: "icheckbox_square-green",
+                        radioClass: "iradio_square-green",
+                    })
+                }
+            });
+        }
+
+        function insertArticle(obj) {
+            $.ajax({
+                type: "POST",
+                url: "/api/insertArticle",
+                data: obj,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    layer.msg(response);
+                }
+            });
+        }
+    </script>
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/form_editors.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:35 GMT -->
+
+</html>

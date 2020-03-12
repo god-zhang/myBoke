@@ -1,17 +1,16 @@
-@import '//at.alicdn.com/t/font_1635145_gqkwaiexbb.css';
-.contentYS {
-    width: 100%;
-    height: 100%;
-    background: url('~@/assets/images/bg.jpg') no-repeat fixed;
-    overflow: scroll;
+@import 'http://cdn.repository.webfont.com/webfonts/nomal/115540/45904/5e4f95daf629d8031c4c0d5f.css';
+html::-webkit-scrollbar {
+    display: none;
 }
 
-.contentYS::-webkit-scrollbar {
+[v-cloak] {
+    display: none;
+}
+
+.articles pre code::-webkit-scrollbar,
+.giveMes .content .allEmoji::-webkit-scrollbar,
+.replyBorder .replyCon .allEmoji::-webkit-scrollbar {
     display: none
-}
-
-.top80 {
-    margin-top: 80px;
 }
 
 .card {
@@ -23,6 +22,15 @@
 
 ul {
     list-style: none;
+}
+
+.articles>.article>.content>ul {
+    list-style: circle;
+}
+
+.articles>.article>.content>ul,
+.articles>.article>.content>ol {
+    margin-left: 20px;
 }
 
 .cardCommon {
@@ -39,7 +47,42 @@ ul {
     margin: 10px 0;
 }
 
-.height60 {
+.height10 {
     width: 100%;
-    height: 60px;
+    height: 10%;
+}
+
+.height60,
+.height80 {
+    width: 100%;
+    height: 5%;
+}
+
+.height100 {
+    width: 100%;
+    height: 100px;
+}
+
+.article pre code {
+    display: block;
+    background-color: #000;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px 0px #000;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'sans-serif';
+    overflow: scroll;
+    line-height: 30px;
+}
+
+.article>.content {
+    word-break: break-all;
+}
+
+@media screen and (max-width:1024px) {
+    .article>.content img {
+        width: 100% !important;
+    }
 }

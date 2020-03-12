@@ -1,36 +1,39 @@
 <template>
-  <div class="leaveMes contentYS" @scroll.passive="handleScroll">
-    <blogNav></blogNav>
-    <div class="content">
+  <div class="leaveMes contentYS">
+    <div class="content animated bounceInUp">
       <giveMes></giveMes>
       <comments></comments>
     </div>
-    <blogFoot v-if="scrollBottom < 20"></blogFoot>
   </div>
 </template>
 
 <script>
-import blogNav from '../components/nav';
+import {mapMutations} from 'vuex';
 import giveMes from '../components/givemeMes';
 import comments from '../components/comments';
-import blogFoot from '../components/footer';
+import animate from 'animate.css';
+import axios from 'axios';
 export default {
   data() {
     return {
-      scrollBottom: 20
+      emojis: []
     }
   },
   components:{
-    blogNav,
     giveMes,
     comments,
-    blogFoot
+  },
+  mounted() {
+    window.scrollTo(0,0);
+    axios.get(`${this.global.apiUrl}queryEmoji`)
+    .then((res)=>{
+        if(res.status == 200){
+            this.getEmojis(res.data);
+        }
+    })
   },
   methods:{
-    handleScroll(e){
-      let scrollBottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight;
-      this.scrollBottom = scrollBottom;
-    }
+    ...mapMutations(['getEmojis'])
   }
 }
 </script>
@@ -39,7 +42,7 @@ export default {
     .leaveMes{
       .content{
         width: 66.7%;
-        margin: 80px auto;
+        margin: 10px auto;
       }
     }
     @media screen and (max-width:1024px){

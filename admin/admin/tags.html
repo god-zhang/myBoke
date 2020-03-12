@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签管理</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link href="css/animate.min.css" rel="stylesheet">
+    <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+</head>
+<style>
+    .Atag {
+        display: inline-block;
+        background-color: #23c6c8;
+        color: #FFF;
+        font-size: 16px;
+        font-weight: 600;
+        padding: 8px 10px;
+        text-shadow: none;
+        margin: 15px;
+        cursor: pointer;
+    }
+</style>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>增加标签</h5>
+                    </div>
+                    <div class="form-group col-sm-8" style="margin-top: 20px;">
+                        <label for="tag" class="col-sm-2 control-label" style="padding-top: 10px;">增加标签: </label>
+                        <div class="col-sm-3">
+                            <input type="text" placeholder="请输入标签名" class="form-control tag" id="tag" name="tag" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-8">
+                        <button type="button" class="btn btn-w-m btn-primary submit" onclick="submitTag()">增加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>所有标签</h5>
+                    </div>
+                    <div style="margin-top: 20px;" class="col-sm-8 tagCon">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>每个标签下有多少文章</h5>
+                    </div>
+                    <div style="margin-top: 20px;" class="col-sm-12">
+                        <table id="countTag" data-mobile-responsive="true" data-show-refresh="true">
+                            <thead>
+                                <th>标签</th>
+                                <th>数量</th>
+                            </thead>
+                            <tbody class="countTag">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/plugins/layer/laydate/laydate.js"></script>
+<script src="js/jquery.min.js?v=2.1.4"></script>
+<script src="js/bootstrap.min.js?v=3.3.6"></script>
+<script src="js/plugins/layer/layer.min.js"></script>
+<script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/wangEditor.min.js"></script>
+<script src="js/jQuery.Cookie.js"></script>
+<script src="./common.js"></script>
+
+<script>
+    function submitTag() {
+        var tagName = $('#tag').val();
+        $.ajax({
+            type: "GET",
+            url: "/api/insertTag?name=" + tagName,
+            dataType: 'json',
+            success: function(response) {
+                layer.msg(response);
+                queryTags();
+            }
+        });
+    }
+
+    function queryTags() {
+        var tagCon = $(".tagCon");
+        var countTag = $('.countTag');
+        $.ajax({
+            type: "GET",
+            url: "/api/queryTags",
+            dataType: "json",
+            success: function(response) {
+                var str = '';
+                var trStr = '';
+                var res = response;
+                var j = 0;
+                for (var i = 0; i < response.length; i++) {
+                    str += "<span class='Atag' data-id=" + response[i].id + " onclick='deleteTag(this)'>" + response[i].name + "</span>";
+                    $.ajax({
+                        type: "GET",
+                        url: "/api/countByTagId?tag_id=" + response[i].id,
+                        dataType: "json",
+                        success: function(resp) {
+                            trStr += '<tr>\
+                                        <td>' + res[j++].name + '</td>\
+                                        <td>' + resp + '</td>\
+                                    </tr>';
+                            countTag.html(trStr);
+                        }
+                    });
+                }
+                tagCon.html(str);
+
+
+            }
+        });
+    }
+
+
+    function deleteTag(e) {
+        var id = $(e).data('id');
+        layer.confirm('你确定要删除id: ' + id + '的标签吗?', {
+            btn: ['确定', '算了']
+        }, function() {
+            $.ajax({
+                type: "POST",
+                url: "/api/deleteTag",
+                data: {
+                    id: id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    layer.msg(response);
+                    queryTags();
+                }
+            });
+        }, function() {
+            layer.msg('你取消了删除');
+        })
+    }
+    window.onload = function() {
+        $('#countTag').bootstrapTable({
+            showRefresh: false
+        });
+        queryTags();
+    }
+</script>
+
+</html>

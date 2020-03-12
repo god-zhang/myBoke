@@ -3,52 +3,32 @@
         <div class="title cardTitle">热门文章</div>
         <hr color='#999' size='1px' class="cardHr">
         <ul>
-            <li v-for="item in list" :key="item.id+'hot'">
-                <span>{{item.id}}</span><span>{{item.title}}</span>
-            </li>
+            <router-link tag="li" v-for="(item,index) in list" :key="item.id+'hot'" :to="'/article?aId='+item.id">
+                <span>{{index+1}}</span><span>{{item.title}}</span>
+            </router-link>
         </ul>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
-            list:[
-                {
-                    id: 1,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 2,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 3,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 4,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 5,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 6,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 7,
-                    title: '这个博客太火了!'
-                },
-                {
-                    id: 8,
-                    title: '这个博客太火了!'
-                }
-            ]
+            list:[]
         }
+    },
+
+    created() {
+        axios.get(`${this.global.apiUrl}queryArticlesByViews`)
+        .then(res => {
+            if(res.status == 200){
+                this.list = res.data;
+            }
+        })
+        .catch(e => {
+            console.log(e);
+        })
     },
 }
 </script>

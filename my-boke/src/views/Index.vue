@@ -4,34 +4,49 @@
 
     <div class="top">
       <div class="go" :class="isGo ? 'hide' : ''">
-        <div class="con">
-          <div class="entry css1e773aea221c354" @click="toHome">MyBlog</div>
-          <div class="title css1e773aea221c354">星 空 深 邃 , 值 得 等 待</div>
+        <div class="con animated zoomInUp">
+          <div class="name css1f0c0aa5751c354">殒殇</div>
+          <div class="entry css1f0c0aa5751c354" @click="toHome">探 索</div>
+          <div class="title" v-cloak>{{truthText}}</div>
         </div>
       </div>
 
-      <img src="~@/assets/images/blackhold.png" alt="" :class="isGo ? 'hide' : ''">
+      <img src="~@/assets/images/blackhole.png" alt="" :class="isGo ? 'hide' : ''">
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import animate from 'animate.css';
 export default {
   name: 'index',
   data() {
     return {
-      isGo: false
+      isGo: false,
+      truthText: '探索中......'
     }
   },
-  mounted() {
-
+  created() {
+    // console.log(this.$router.currentRoute.path)
+    if(this.$router.currentRoute.path == '/'){
+      this.$store.state.isNavFooter = false;
+    }else{
+      this.$store.state.isNavFooter = true;
+    }
+    axios.get(`${this.global.apiUrl}queryTopTruth`).then((res)=>{
+      if(res.status == 200){
+        this.truthText = res.data.content;
+      }else{
+        this.truthText = '星 空 深 邃 , 值 得 等 待';
+      }
+    })
   },
   computed: {
   
   },
 
   methods: {
-
     toHome(){
       this.isGo = true;
       setTimeout(()=>{
@@ -45,15 +60,8 @@ export default {
 </script>
 
 <style scoped lang='less'>
-  @import 'http://cdn.repository.webfont.com/webfonts/nomal/115540/45904/5e297d58f629d80ab485eaea.css';
-  [v-cloak]{
-    display: block;
-  }
-
   .index{
-    height: 100%;
-    background: url('~@/assets/images/bg.jpg') no-repeat;
-    background-size: cover;
+    height: 100vh;
     .loading.hide{
       width: 0;
       height: 2px;
@@ -83,20 +91,21 @@ export default {
       }
       .go{
         position: absolute;
-        width: 400px;
-        height: 400px;
+        transform: translateX(-50%) translateY(-14%);
         top: 50%;
         left: 50%;
-        margin: -200px 0 0 -200px;
         z-index: 10;
         font-size: 20px;
         text-align: center;
         &.hide{
-          animation: xishou 1s forwards linear;
+          animation: hide 2s ease-in-out forwards;
         }
         .con{
-          margin: 50% auto;
           transform: translateY(-50%);
+          .name{
+            margin-bottom: 40px;
+            font-size: 35px;
+          }
         }
         .entry{
           margin: 0 auto;
@@ -110,7 +119,8 @@ export default {
           }
         }
         .title{
-          line-height: 60px;
+          margin-top: 40px;
+          font-size: 18px;
         }
       }
     }
@@ -123,11 +133,16 @@ export default {
           margin: -150px 0 0 -150px;
         }
         .go{
-          width: 300px;
-          height: 300px;
-          margin: -150px 0 0 -150px;
+          transform: translateX(-50%) translateY(-8%);
           .title{
-            font-size: 16px;
+            font-size: 14px;
+            margin-top: 20px;
+          }
+          .con{
+            .name{
+              font-size: 30px;
+              margin-bottom: 20px;
+            }
           }
           .entry{
             width: 80px;
@@ -182,38 +197,16 @@ export default {
     }
   }
 
-  @keyframes xishou {
+
+  @keyframes hide {
     0%{
-      transform: rotate(0);
-      font-size: 18px;
       opacity: 1;
     }
 
-    25%{
-      transform: rotate(-360deg);
-      font-size: 13px;
-      opacity: 0.75;
-    }
-
-    50%{
-      transform: rotate(-720deg);
-      font-size: 8px;
-      opacity: 0.5;
-    }
-
-    75%{
-      transform: rotate(-1080deg);
-      font-size: 3px;
-      opacity: 0,25;
-    }
-
     100%{
-      transform: rotate(-1440deg);
-      font-size: 0px;
       opacity: 0;
     }
   }
-
   @keyframes loading {
     0%{
       width: 0;
