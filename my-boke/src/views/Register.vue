@@ -6,7 +6,7 @@
             <label for="email">
                 <div class="title">邮箱 :</div>
                 <div class="inp">
-                    <input type="email" placeholder="请输入邮箱" id="email" name="email" v-model="email" autocomplete="off">
+                    <input type="email" placeholder="请输入邮箱,目前只支持QQ邮箱" id="email" name="email" v-model="email" autocomplete="off">
                 </div> 
             </label>
         </div>

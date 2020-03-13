@@ -63,6 +63,8 @@ export default {
                 this.$layer.msg('你还没有输入内容哦~')
             }else if(!this.$cookies.isKey('email') || !this.$cookies.isKey('password')){
                 this.$layer.msg('请先登录 再评论哟~')
+            }else if(this.commentMes.length > 200){
+                this.$layer.msg('评论长度不得超过两百哟~');
             }else{
                 this.dealCommentContent();
                 const userMes = JSON.stringify({

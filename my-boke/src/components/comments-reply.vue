@@ -7,9 +7,9 @@
         </div>
         <div class="content">
             <div class="name">
-                <span class="name1">{{replyData.name}} <span class="isAdmin" v-if="replyData.is_admin == 1">{{nickName1}}</span></span>
+                <span class="name1">{{replyData.name}} <span class="isAdmin" v-if="replyData.is_admin == 1">博主</span></span>
                 <span class="reply1">回复</span>
-                <span class="name2">{{replyData.parent_name}} <span class="isAdmin" v-if="replyData.is_admin == 1">{{nickName2}}</span></span>
+                <span class="name2">{{replyData.parent_name}} <span class="isAdmin" v-if="replyData.parent_name == '殒殇'">博主</span></span>
                 <span class="comment-con">
                     <template v-for="(item,index) in JSON.parse(replyData.content2)">
                         <img :src="item.split(replyData.url_split_str)[1]" alt="" :key="index+'emjiosImg'" v-if="item.indexOf(replyData.url_split_str)>-1" width='20'>
@@ -40,22 +40,6 @@ export default {
         }
     },
     props: ['replyData','parentId','blogId'],
-    computed: {
-        nickName1(){
-            if(this.replyData.name == '殒殇'){
-                return '博主';
-            }else{
-                return '博主夫人';
-            }
-        },
-        nickName2(){
-            if(this.replyData.parent_name == '殒殇'){
-                return '博主';
-            }else{
-                return '博主夫人';
-            }
-        }
-    },
     methods:{
         replyUser(){
             this.isReplay = !this.isReplay;

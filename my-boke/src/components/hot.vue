@@ -3,7 +3,7 @@
         <div class="title cardTitle">热门文章</div>
         <hr color='#999' size='1px' class="cardHr">
         <ul>
-            <router-link tag="li" v-for="(item,index) in list" :key="item.id+'hot'" :to="'/article?aId='+item.id">
+            <router-link tag="li" v-for="(item,index) in list" :key="item.id+'hot'" :to="'/article?aId='+item.id" :title="item.title">
                 <span>{{index+1}}</span><span>{{item.title}}</span>
             </router-link>
         </ul>
@@ -40,6 +40,9 @@ export default {
                 height: 35px;
                 line-height: 35px;
                 position: relative;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
                 cursor: pointer;
                 &:nth-of-type(1){
                     span{

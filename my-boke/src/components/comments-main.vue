@@ -125,6 +125,9 @@ export default {
                 margin-bottom: 10px;
                 margin-top: 15px;
                 font-size: 14px;
+                box-sizing: border-box;
+                width: 90%;
+                word-break: break-all;
             }
             .time{
                 font-size: 13px;
