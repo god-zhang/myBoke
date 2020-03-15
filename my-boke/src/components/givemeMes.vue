@@ -12,7 +12,7 @@
             <div class="allEmoji" v-if="isShowEmoji">
                 <img v-for="(item,index) in emojis" :key="index+item.alt" :src="item.src" :alt="item.alt" :title="item.alt" @click="addEmoji">
             </div>
-            <textarea id="comments" @keydown.enter="submitMes" contenteditable="true" v-model="commentMes" cols="20" rows="10" :autofocus='isfocus' @focus="onFocus" placeholder="说出你的心声~"></textarea>
+            <textarea id="comments" contenteditable="true" v-model="commentMes" cols="20" rows="10" :autofocus='isfocus' @focus="onFocus" placeholder="说出你的心声~"></textarea>
         </div>
         <button class="upMes" @click='submitMes'>{{submitBtn}}</button>
     </div>
@@ -182,8 +182,8 @@ export default {
                 left: 15px;
                 top: 40px;
                 background-color: #fff;
-                width: 455px;
-                height: 175px;
+                width: 60%;
+                height: 170px;
                 overflow: scroll;
                 img{
                     width: 35px;

@@ -7,7 +7,7 @@
         </div>
         <div class="content">
             <div class="name">
-                <span>{{commentsData.name}} <span class="isAdmin" v-if="commentsData.is_admin == 1">{{nickName}}</span></span>
+                <span><span>{{commentsData.name}}</span><span class="isAdmin" v-if="commentsData.is_admin == 1 && commentsData.name == '殒殇'">博主</span></span>
             </div>
             <div class="comment-con">
                 <template v-for="(item,index) in JSON.parse(commentsData.content2)">
@@ -61,15 +61,6 @@ export default {
             default: ''
         }
     },
-    computed: {
-        nickName(){
-            if(this.commentsData.name == '殒殇'){
-                return '博主';
-            }else{
-                return '博主夫人';
-            }
-        }
-    },
     methods:{
         replyUser(){
             this.showReply = !this.showReply;
@@ -109,6 +100,11 @@ export default {
             text-align: left;
             margin-left: 10px;
             .name{
+                &>span{
+                    display: flex;
+                    align-content: center;
+                    align-items: center;
+                }
                 color: #2ea7e0;
                 font-size: 15px;
                 font-weight: 400;
@@ -118,7 +114,7 @@ export default {
                     font-size: 10px;
                     background-color: #6cc40d;
                     border-radius: 5px;
-                    margin-left: 1px;
+                    margin-left: 5px;
                 }
             }
             .comment-con{

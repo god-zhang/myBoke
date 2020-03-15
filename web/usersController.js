@@ -12,6 +12,8 @@ const nodemailer = require('nodemailer');
 
 const usersDao = require('../dao/usersDao');
 
+const pageViewsDao = require('../dao/pageViewsDao');
+
 
 //注册
 function register(req, res) {
@@ -78,6 +80,15 @@ function login(req, res) {
                     res.end();
                     usersDao.updateLoginTime(common.getIntDate(), email, (updateRes) => {}, (updateErr) => {
                         wlog.errLog('用户登录时间更新失败' + updateErr);
+                    })
+                    pageViewsDao.queryViews((viewsRes) => {
+                        if (viewsRes.length > 0) {
+                            pageViewsDao.updateViews(parseInt(viewsRes[0].id), parseInt(viewsRes[0].views) + 1, common.getDate(), (updateRes) => {}, updateErr => {
+                                wlog.errLog('更新浏览量失败' + updateErr);
+                            })
+                        }
+                    }, viewsErr => {
+                        wlog.errLog('查询浏览量最后一条失败' + viewsErr);
                     })
                 } else {
                     res.writeHead(200, globalConfig['access_header']);

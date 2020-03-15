@@ -243,6 +243,9 @@ export default {
             width: 90%;
             .head{
                 .mes{
+                    .title{
+                        word-break: break-all;
+                    }
                     .other_mes{
                         .refresh{
                             word-break: break-all;
@@ -250,6 +253,11 @@ export default {
                             line-height: 35px;
                         }
                     }
+                }
+                .time{
+                    text-align: right;
+                    white-space: nowrap;
+                    margin-left: 10px;
                 }
             }
         }

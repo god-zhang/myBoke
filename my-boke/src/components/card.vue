@@ -203,6 +203,9 @@ export default {
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     cursor: pointer;
+                    span.titleCon{
+                        margin-left: 0px;
+                    }
                     .titleCon:hover{
                         color: #05b0ff;
                         text-decoration: underline;

@@ -77,7 +77,6 @@ export default {
       left: 0;
       width: 100vw;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
       img{
         position: absolute;
         width: 400px;
@@ -129,8 +128,8 @@ export default {
     .index{
       .top{
         img{
-          width: 300px;
-          margin: -150px 0 0 -150px;
+          width: 280px;
+          margin: -138px 0 0 -140px;
         }
         .go{
           transform: translateX(-50%) translateY(-8%);

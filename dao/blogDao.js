@@ -279,6 +279,22 @@ function countCommentsById(id, success, err) {
     connectiondb.end();
 }
 
+//删除指定文章下面的所有评论
+function deleteCommentsByBlogId(id, success, err) {
+    const connectiondb = dbutil();
+    const querrySql = 'delete from comments where blog_id = ?;';
+    connectiondb.connect();
+    connectiondb.query(querrySql, id, function(error, result) {
+        if (error == null) {
+            success(result);
+        } else {
+            err(error)
+        }
+    })
+
+    connectiondb.end();
+}
+
 module.exports = {
     insertArticle,
     insertBlogAndTags,
@@ -296,5 +312,6 @@ module.exports = {
     searchTitles,
     deleteArticle,
     deleteTAMapping,
-    countCommentsById
+    countCommentsById,
+    deleteCommentsByBlogId
 }

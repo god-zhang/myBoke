@@ -215,6 +215,9 @@ function deleteArticle(req, res) {
                             res.writeHead(200, globalConfig['access_header']);
                             res.write(JSON.stringify(`删除文章 ${id} 成功`))
                             res.end();
+                            blogDao.deleteCommentsByBlogId(id, (deleteComment) => {}, (deleErr) => {
+                                wlog.errLog(`删除${id}文章评论失败` + deleErr);
+                            });
                         })
                     }, (maperr) => {
                         res.writeHead(500, globalConfig['access_header']);

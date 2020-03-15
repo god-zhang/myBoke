@@ -1,5 +1,5 @@
 <template>
-  <div class="about" @scroll.passive="handleScroll">
+  <div class="about">
     <div class="content animated bounceInUp">
       <div class="head css1f0c0aa5751c354">
         <p>殒殇</p>
@@ -10,7 +10,8 @@
         <div class="aboutMe">
           <h3><span class="kk"></span>关于我</h3>
           <div>
-            <p class="marginB">一个沉迷代码, 日渐消瘦的代码狂, 平时除了敲代码就是打打羽毛球, 没事也会打打游戏</p>
+            <p class="marginB">一个放诞不羁, 热爱自由, 却又被现实的枷锁困住的代码狂, 每次面对代码就像是面对星辰大海, 有着无尽的探索欲望</p>
+            <p class="marginB">若对本站有疑问, 或者有什么问题, 或者你是大神, 可以留言给我, 我们一起探讨, 一起感受星辰大海</p>
             <p>以下是我的联系方式:</p>
             <p>Q Q : <span class="color1">2374171406</span></p>
             <p>微信 : <span class="color1">点开最下面的微信图标扫码加我</span></p>
@@ -24,7 +25,7 @@
             <p>网站架构:</p>
             <p>前端 : <span class="color2">VUE</span></p>
             <p class="marginB">后端 : <span class="color2">NodeJs</span> + <span class="color2">Express</span> + <span class="color2">MySQL</span></p>
-            <p>采用的是腾讯云服务器</p>
+            <p>服务器采用的是华为云</p>
           </div>
         </div>
 
@@ -43,20 +44,9 @@
 <script>
 import animate from 'animate.css';
 export default {
-  data() {
-    return {
-      scrollBottom: 50,
-    }
-  },
   mounted() {
     window.scrollTo(0,0);
   },
-  methods:{
-    handleScroll(e){
-      let scrollBottom = e.target.scrollHeight - e.target.scrollTop - e.target.clientHeight;
-      this.scrollBottom = scrollBottom;
-    }
-  }
 }
 </script>
 

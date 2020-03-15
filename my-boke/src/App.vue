@@ -13,6 +13,7 @@ import {mapMutations} from 'vuex';
 import blogNav from './components/nav';
 import blogFoot from './components/footer';
 import backTop from './components/backTop';
+import axios from 'axios';
 export default {
   data() {
     return {
@@ -33,6 +34,7 @@ export default {
     window.scrollTo(0,0);
     window.addEventListener('scroll',this.handleScroll);
     this.randomStr();
+    this.autoLogin();
   },
   
   destroyed () {
@@ -64,7 +66,33 @@ export default {
       }
       return scrollHeight;
     },
-    ...mapMutations(['changeScrollTop','changeScrollBottom','randomStr'])
+
+    autoLogin(state) {
+      if (this.$cookies.isKey('email') && this.$cookies.isKey('password')) {
+        const loginMes = JSON.stringify({
+            email: this.$cookies.get('email'),
+            password: this.passReturn()
+        })
+        axios.post(`${this.global.apiUrl}login`, loginMes)
+            .then((res) => {
+                if (res.status == 200) {
+                    if (res.data.code == 200) {
+                      this.changeUserInfo(res.data.result);
+                    }else{
+                      this.$layer.msg('自动登陆失败,请重新登录,ERROR: '+res.data.msg)
+                    }
+                }
+            })
+        }
+    },
+    passReturn(){
+      try {
+        return window.atob(this.$cookies.get('password'))
+      } catch (error) {
+        return this.$cookies.get('password')
+      }
+    },
+    ...mapMutations(['changeScrollTop','changeScrollBottom','randomStr','changeUserInfo'])
   },
 }
 </script>
@@ -80,12 +108,25 @@ export default {
   background: url('~@/assets/images/bg.jpg') no-repeat;
   background-attachment: fixed;
   background-size: cover;
-  -webkit-background-attachment:fixed;
-  -o-background-attachment:fixed;
-  -moz-background-attachment:fixed;
-  -ms-background-attachment:fixed;
   &::-webkit-scrollbar {
     display: none;
   }
 }
+
+@media screen and (max-width: 1024px){
+    #app{
+      background: none;
+    }
+    #app::before {
+      content: '';
+      position: fixed;
+      z-index: -1;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: url('~@/assets/images/bg.jpg') center no-repeat;
+      background-size: cover;
+    }
+  }
 </style>

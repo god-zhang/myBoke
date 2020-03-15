@@ -7,9 +7,9 @@
         </div>
         <div class="content">
             <div class="name">
-                <span class="name1">{{replyData.name}} <span class="isAdmin" v-if="replyData.is_admin == 1">博主</span></span>
+                <span class="name1"><span>{{replyData.name}}</span><span class="isAdmin" v-if="replyData.is_admin == 1">博主</span></span>
                 <span class="reply1">回复</span>
-                <span class="name2">{{replyData.parent_name}} <span class="isAdmin" v-if="replyData.parent_name == '殒殇'">博主</span></span>
+                <span class="name2"><span>{{replyData.parent_name}}</span><span class="isAdmin" v-if="replyData.parent_name == '殒殇'">博主</span></span>
                 <span class="comment-con">
                     <template v-for="(item,index) in JSON.parse(replyData.content2)">
                         <img :src="item.split(replyData.url_split_str)[1]" alt="" :key="index+'emjiosImg'" v-if="item.indexOf(replyData.url_split_str)>-1" width='20'>
@@ -90,6 +90,9 @@ export default {
                 span{
                     margin-right: 5px;
                     &.name1,&.name2{
+                        display: inline-flex;
+                        align-items: center;
+                        align-content: center;
                         color: #2ea7e0;
                     }
                     &.reply1{

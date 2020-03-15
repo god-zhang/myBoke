@@ -39,8 +39,7 @@
 <script>
 import logo from '../assets/images/logo.png';
 import logo_hover from '../assets/images/logo_hover.png';
-import {mapState,mapMutations} from 'vuex';
-import axios from 'axios';
+import {mapState} from 'vuex';
 export default {
   data() {
     return {
@@ -54,9 +53,6 @@ export default {
     ...mapState({
       userInfo: (state) => state.userInfo
     }),
-  },
-  mounted() {
-    this.autoLogin();
   },
   methods:{
     showMenu(){
@@ -86,32 +82,6 @@ export default {
       location.reload()
       this.$layer.msg('退出成功');
     },
-    passReturn(){
-      try {
-        return window.atob(this.$cookies.get('password'))
-      } catch (error) {
-        return this.$cookies.get('password')
-      }
-    },
-    autoLogin(state) {
-      if (this.$cookies.isKey('email') && this.$cookies.isKey('password')) {
-        const loginMes = JSON.stringify({
-            email: this.$cookies.get('email'),
-            password: this.passReturn()
-        })
-        axios.post(`${this.global.apiUrl}login`, loginMes)
-            .then((res) => {
-                if (res.status == 200) {
-                    if (res.data.code == 200) {
-                      this.changeUserInfo(res.data.result);
-                    }else{
-                      this.$layer.msg('自动登陆失败,请重新登录,ERROR: '+res.data.msg)
-                    }
-                }
-            })
-        }
-    },
-    ...mapMutations(['changeUserInfo']),
   }
 }
 </script>
@@ -247,8 +217,6 @@ export default {
           justify-content: space-between;
           line-height: 60px;
           .logo{
-            width: 20%;
-            margin-right: 10%;
             text-align: left;
             cursor: pointer;
             &:hover{
@@ -256,18 +224,14 @@ export default {
             }
           }
           .login{
-            width: 40%;
-            margin-left: 10%;
-            text-align: center;
+            text-align: right;
             cursor: pointer;
             &:hover{
               color: #6200ec;
             }
           }
           .more{
-            width: 20%;
-            margin-right: 10%;
-            text-align: right;
+            text-align: center;
             img{
               vertical-align: middle;
             }
@@ -303,7 +267,6 @@ export default {
             position: relative;
             width: 50px;
             height: 60px;
-            margin-left: 10%;
             text-align: right;
             cursor: pointer;
             img{

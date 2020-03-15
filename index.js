@@ -76,10 +76,16 @@ app.get('/api/queryEssays', loader.get('/api/queryEssays'));
 app.get('/api/queryEssayByPage', loader.get('/api/queryEssayByPage'));
 app.post('/api/deleteEssay', loader.get('/api/deleteEssay'));
 
+
+//浏览量
+app.get('/api/getTop7Views', loader.get('/api/getTop7Views'));
+
+
+
 //定时任务
-schedule.scheduleJob('00 30 10 * * *', () => {
+schedule.scheduleJob('00 00 00 * * *', () => {
     loader.get('/api/truth')();
-    console.log('每日一句更新完成')
+    loader.get('/api/insertViews')();
 })
 
 

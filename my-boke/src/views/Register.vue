@@ -6,7 +6,7 @@
             <label for="email">
                 <div class="title">邮箱 :</div>
                 <div class="inp">
-                    <input type="email" placeholder="请输入邮箱,目前只支持QQ邮箱" id="email" name="email" v-model="email" autocomplete="off">
+                    <input type="email" placeholder="请输入邮箱,暂支持QQ邮箱" id="email" name="email" v-model="email" autocomplete="off">
                 </div> 
             </label>
         </div>
@@ -48,13 +48,13 @@
         </div>
 
         <div class="code">
-            <label for="code">
+            <div class="codeDiv">
                 <div class="title">验证码 :</div>
                 <div class="inp">
                     <input type="text" placeholder="请输入验证码" id="code" name="code" autocomplete="off" v-model="codeText">
                 </div>
                 <div class="qrcode" v-html="code.data" title="看不清?点击更换" @click="changeCode"></div>
-            </label>
+            </div>
         </div>
 
         <div class="showAvatar">
@@ -174,7 +174,7 @@ export default {
           @media screen and (max-width:767px){
               width: 80%;
           }
-          .email label,.password label,.passagain label,.avatar label,.userName label,.code label{
+          .email label,.password label,.passagain label,.avatar label,.userName label,.code .codeDiv{
               display: flex;
               justify-content: space-between;
               align-items: center;
@@ -202,6 +202,9 @@ export default {
                     color: #000;
                   }
               }
+          }
+          .code .codeDiv .title{
+              width: 50%;
           }
           .code .qrcode{
               width: 50%;

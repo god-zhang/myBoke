@@ -54,3 +54,5 @@ tag查询博客失败Error: ER_PARSE_ERROR: You have an error in your SQL syntax
 博客查询失败Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-3' at line 1--->2020-3-12 23:35:22
 tag查询博客失败Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-3' at line 1--->2020-3-12 23:35:47
 博客查询失败Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-3' at line 1--->2020-3-13 15:31:18
+查询浏览量最后一条失败Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1 * from page_views order by id desc' at line 1--->2020-3-14 16:32:11
+更新浏览量失败Error: ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where id = 1 set views = 1,ctime = '2020-3-14 16:54:49'' at line 1--->2020-3-14 16:54:49

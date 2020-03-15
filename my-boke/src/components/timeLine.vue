@@ -1,7 +1,7 @@
 <template>
     <div class="timeLine">
         <ul>
-            <li v-for="item in timeData" :key="item.id+'timeLine'" class="animated fadeInRightBig">
+            <li v-for="item in timeData" :key="item.id+'timeLine'" class="animated fadeInUp">
                 <img class="tag" src="~@/assets/images/star.png">
                 <div class="time">{{item.ctime}}</div>
                 <div class="content" v-html="item.content"></div>

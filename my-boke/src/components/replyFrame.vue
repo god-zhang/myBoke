@@ -1,7 +1,7 @@
 <template>
     <div class="replyBorder" v-if='showReply'>
         <div class="replyCon">
-            <textarea @keydown.enter="biuReply" name="replyB" id="replyB" cols="30" rows="1" :placeholder="`回复 ${replyName}:`" v-model="replyVal" :autofocus='isfocus'></textarea>
+            <textarea name="replyB" id="replyB" cols="30" rows="1" :placeholder="`回复 ${replyName}:`" v-model="replyVal" :autofocus='isfocus'></textarea>
             <div class="emojis">
                 <img src="~@/assets/images/emjio.png" alt="添加表情" title="添加表情" @click="showEmoji">
                 <div class="allEmoji" v-if="isShowEmoji">
@@ -157,8 +157,8 @@ export default {
                     right: 0;
                     bottom: 50px;
                     background-color: #fff;
-                    width: 455px;
-                    height: 175px;
+                    width: 100%;
+                    height: 170px;
                     overflow: scroll;
                     img{
                         width: 35px;
