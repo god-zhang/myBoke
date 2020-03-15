@@ -41,8 +41,15 @@ export default {
     },
     methods: {
         login(){
+            const reg = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/g
             if(this.email == '' || this.password == ''){
                 this.$layer.msg('邮箱或密码不能为空');
+                return;
+            }else if(!reg.test(this.email)){
+                this.$layer.msg('邮箱格式不正确');
+                return;
+            }else if(this.password.length < 8 || this.password.length > 12){
+                this.$layer.msg('密码长度必须是8-12位');
                 return;
             }
             const loginMes = JSON.stringify({

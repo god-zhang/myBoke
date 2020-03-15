@@ -21,7 +21,7 @@
         <div class="aboutWeb">
           <h3><span class="kk"></span>关于本站</h3>
           <div>
-            <p class="marginB">本站建于2020年3月1日</p>
+            <p class="marginB">本站建于2020年3月15日</p>
             <p>网站架构:</p>
             <p>前端 : <span class="color2">VUE</span></p>
             <p class="marginB">后端 : <span class="color2">NodeJs</span> + <span class="color2">Express</span> + <span class="color2">MySQL</span></p>
@@ -33,7 +33,7 @@
           <h3><span class="kk"></span>特别说明</h3>
           <div>
             <p class="marginB">本站文章仅代表个人观点，与任何组织或个人无关。</p>
-            <p class="marginB">注册时使用到的邮箱，仅供做用户的唯一识别码，以及回复消息时使用，不做他用。</p>
+            <p class="marginB">注册时使用到的邮箱，仅供做用户的唯一识别码，接收验证码以及回复消息时使用，不做他用。</p>
           </div>
         </div>
       </div>

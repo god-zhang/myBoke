@@ -14,6 +14,9 @@ const usersDao = require('../dao/usersDao');
 
 const pageViewsDao = require('../dao/pageViewsDao');
 
+//随机验证码
+let code = '';
+
 
 //注册
 function register(req, res) {
@@ -27,31 +30,33 @@ function register(req, res) {
             const resultMes = userInfo[0].name == name ? `用户名 ${name} 已被注册,请重新输入` : `邮箱 ${email} 已被注册,请重新输入或直接登录`;
             fs.unlink(`./files/${req.file.filename}`, () => {
                 res.writeHead(200, globalConfig['access_header']);
-                res.write(JSON.stringify(resultMes));
+                res.write(JSON.stringify({ code: 201, msg: resultMes }));
                 res.end();
             })
             return;
         } else {
-            setAvatarUrl(req, (avatarUrl) => {
-                usersDao.register(name, hashPass, avatarUrl, email, 0, common.getDate(), 0, (result) => {
-                    res.writeHead(200, globalConfig['access_header']);
-                    res.write(JSON.stringify(`${name}: 注册成功`))
-                    res.end();
-                    sendEmail(email, `<h3>欢迎 <span style='color: #05b0ff'>${name}</span> 小哥哥,小姐姐的加入哟~</h3>
-                    <h4>客官常来呀<span style='color: #fe4a4a'>❤</span>~</h4>
-                    <img src='https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1557987058,3313689738&fm=26&gp=0.jpg' />
-                    <img src='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583766761921&di=b371de68fd3c5fbf072747958cbf8e48&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0127865b691083a801215c8f74695d.gif' />`, (mailerr, data) => {
-                        if (mailerr) {
-                            wlog.errLog('邮件发送失败' + mailerr);
-                        }
+            if (req.body.code == code) {
+                setAvatarUrl(req, (avatarUrl) => {
+                    usersDao.register(name, hashPass, avatarUrl, email, 0, common.getDate(), 0, (result) => {
+                        res.writeHead(200, globalConfig['access_header']);
+                        res.write(JSON.stringify({ code: 200, msg: `${name}: 注册成功` }))
+                        res.end();
+                    }, err => {
+                        res.writeHead(500, globalConfig['access_header']);
+                        res.write(JSON.stringify(`注册失败`))
+                        res.end();
+                        wlog.errLog('注册失败' + err);
                     })
-                }, err => {
-                    res.writeHead(500, globalConfig['access_header']);
-                    res.write(JSON.stringify(`注册失败`))
-                    res.end();
-                    wlog.errLog('注册失败' + err);
                 })
-            })
+            } else {
+                fs.unlink(`./files/${req.file.filename}`, () => {
+                    res.writeHead(200, globalConfig['access_header']);
+                    res.write(JSON.stringify({ code: 202, msg: '验证码输入有误' }))
+                    res.end();
+                })
+                return;
+            }
+
         }
 
     }, userErr => {
@@ -338,14 +343,41 @@ function recentUsers(req, res) {
 
 //生成随机验证码
 function randomCode(req, res) {
-    const code = captcha.create({ fontSize: 50, width: 100 });
-    if (code.text && code.data) {
-        res.writeHead(200, globalConfig['access_header']);
-        res.write(JSON.stringify(code))
-        res.end();
-    } else {
-        wlog.errLog('随机验证码生成失败');
-    }
+    const params = url.parse(req.url, true).query;
+    code = captcha.create({ fontSize: 50, width: 100 }).text;
+    usersDao.queryUserByNameOrEmail('', params.email, (userInfo) => {
+        if (userInfo.length == 0) {
+            if (code) {
+                sendEmail(params.email, `<h3>欢迎 小哥哥,小姐姐的加入哟~</h3>
+                            <h4>客官记得常来呀<span style='color: #fe4a4a'>❤</span>~</h4>
+                            <h4>您的验证码是: <span style='color: #6200ec;font-size: 18px;'>${code}</span></h4>
+                            <img src='https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1557987058,3313689738&fm=26&gp=0.jpg' />`, (mailerr, data) => {
+                    if (mailerr) {
+                        res.writeHead(200, globalConfig['access_header']);
+                        res.write(JSON.stringify({ code: 201, msg: '验证码发送失败,请检查邮箱是否为QQ邮箱' }))
+                        res.end();
+                        wlog.errLog('邮件发送失败' + mailerr);
+                    } else {
+                        res.writeHead(200, globalConfig['access_header']);
+                        res.write(JSON.stringify({ code: 200, msg: '验证码发送成功' }))
+                        res.end();
+                    }
+                })
+            } else {
+                res.writeHead(200, globalConfig['access_header']);
+                res.write(JSON.stringify({ code: 202, msg: '验证码生成失败' }))
+                res.end();
+                wlog.errLog('随机验证码生成失败');
+            }
+        } else {
+            res.writeHead(200, globalConfig['access_header']);
+            res.write(JSON.stringify({ code: 203, msg: '该邮箱已被注册,可直接登录' }))
+            res.end();
+        }
+    }, err => {
+        wlog.errLog('发送验证码时查询用户失败' + err);
+    })
+
 }
 
 //发送邮件
